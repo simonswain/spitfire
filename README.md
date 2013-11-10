@@ -1,6 +1,6 @@
 # Spitfire
 
-Reactive programming framework for Node.js
+Reactive Programming framework for Node.js
 
 Version 0.0.1
 
