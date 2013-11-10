@@ -12,5 +12,5 @@ Version 0.0.1
 * 10/11/2013 0.0.1 Initial release
 
 ## License
-Copyright (c) 2012-2013 Simon Swain  
+Copyright (c) 2013 Simon Swain
 Licensed under the MIT license.
