@@ -6,6 +6,20 @@ Version 0.0.1
 
 [![Build Status](https://travis-ci.org/simonswain/spitfire.png)](https://travis-ci.org/simonswain/spitfire)
 
+```bash
+npm install spitfire
+```
+
+```javascript
+var Spitfire = require('spitfire');
+var topo = Spitfire.create();
+topo.add({id:'my-node'});
+topo.on('message', function(message){
+  console.log(message.id, message.msg);
+});
+topo.start();
+topo.inject('my-node','foo');
+```
 
 ## Release History
 
