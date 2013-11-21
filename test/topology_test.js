@@ -21,15 +21,15 @@ exports['node'] = {
     });
 
   },
-  'start': function(test) {
-    test.expect(1);
-    var nodes = Spitfire.create();
-    nodes.start();
-    nodes.stop(function(){
-      test.ok(true,'Should be stopped');
-      test.done();
-    });
-  },
+  // 'start': function(test) {
+  //   test.expect(1);
+  //   var nodes = Spitfire.create();
+  //   nodes.start();
+  //   nodes.stop(function(){
+  //     test.ok(true,'Should be stopped');
+  //     test.done();
+  //   });
+  // },
   'add': function(test) {
     test.expect(1);
     var nodes = Spitfire.create();
@@ -55,6 +55,64 @@ exports['node'] = {
         });
       });
     });
-  }
+  },
+  'process': function(test) {
+    // create a topo with one node. bind to topo, inject message,
+    // receive message from event handler
+    
+    test.expect(3);
+
+    var nodes = Spitfire.create();
+    nodes.add({
+      id: 'test'
+    }, function(){
+      test.equal(nodes.keys().length, 1,'Should be 1');
+
+      var onMessage = function(message){ 
+        test.equal(message.id, 'test','Should be id');
+        test.equal(message.msg, 'foo','Should be message');
+        nodes.stop(function(){
+          test.done();
+        });
+      }
+
+      nodes.on('message', onMessage);
+      nodes.inject('test', 'foo');
+      nodes.start();
+    });
+  },
+  'process-many': function(test) {
+    // create a topo with one node. bind to topo, inject message,
+    // receive message from event handler
+
+    var limit = 50;
+    var count = 0;
+
+    test.expect(limit);
+
+    var nodes = Spitfire.create();
+    nodes.add({
+      id: 'test'
+    }, function(){
+
+      var onMessage = function(message){ 
+        test.ok(true,'Got message');
+        count --;
+        if(count > 0) {
+          return;
+        }
+        nodes.stop(function(){
+          test.done();
+        });
+      }
+
+      nodes.on('message', onMessage);
+      while(count < limit){
+        count ++;
+        nodes.inject('test', 'message-' + count);
+      }
+      nodes.start();
+    });
+  },
 
 };
