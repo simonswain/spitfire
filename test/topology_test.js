@@ -74,7 +74,7 @@ exports['node'] = {
         nodes.stop(function(){
           test.done();
         });
-      }
+      };
 
       nodes.on('message', onMessage);
       nodes.inject('test', 'foo');
@@ -104,7 +104,7 @@ exports['node'] = {
         nodes.stop(function(){
           test.done();
         });
-      }
+      };
 
       nodes.on('message', onMessage);
       while(count < limit){

@@ -23,13 +23,16 @@ nodes.add({
 }, [1]);
 
 for(var i = 3; i<10; i++){
+
   nodes.add({
-    id: i,
+    id: i
+  }, {
     process: function(msg, done){
       var res = msg.value / 3;
       return done(false, res);
     }
   }, [Math.ceil(i/5)]);
+
 }
 
 
@@ -39,7 +42,7 @@ var pusher;
 var push = function(){
   console.log('pushing', count)
   nodes.inject(
-    1, 
+    1,
     {value: count}
   );
   count ++;
