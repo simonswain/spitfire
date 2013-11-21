@@ -33,7 +33,6 @@ exports['node'] = {
   'add': function(test) {
     test.expect(1);
     var nodes = Spitfire.create();
-    
     nodes.add({
       id: 'test'
     }, function(){
@@ -46,7 +45,6 @@ exports['node'] = {
   'remove': function(test) {
     test.expect(1);
     var nodes = Spitfire.create();
-    
     nodes.add({
       id: 'test'
     }, function(){
