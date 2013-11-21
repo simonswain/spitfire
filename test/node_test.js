@@ -9,7 +9,7 @@ exports['node'] = {
     test.expect(3);
 
     var node = new Node({
-      id: '1'
+      id: 'test'
     }, {
       init: function(done){
         test.ok(true, 'Init ran');
@@ -23,7 +23,7 @@ exports['node'] = {
   'attrs-on-create': function(test) {
     test.expect(1);
     var node = new Node({
-      id: '1',
+      id: 'test',
       foo: 'bar'
     }, function(err){
       test.equal(node.get('foo'), 'bar', 'should match');
@@ -33,7 +33,7 @@ exports['node'] = {
   'attrs-set-after-create': function(test) {
     test.expect(6);
     var node = new Node({
-      id: '1',
+      id: 'test',
       foo: 'bar'
     }, function(err){
       test.equal(node.get('foo'), 'bar', 'should match');
@@ -67,7 +67,7 @@ exports['node'] = {
     test.expect(2);
     var localValue = 23;
     var node = new Node({
-      id: '1',
+      id: 'test',
       myValue: localValue
     }, {
       process: function(msg, done){
@@ -84,7 +84,7 @@ exports['node'] = {
   'stop': function(test) {
     test.expect(2);
     var node = new Node({
-      id: '1'
+      id: 'test'
     }, {
       stop: function(done){
         test.ok(true, 'Stop ran'); 
