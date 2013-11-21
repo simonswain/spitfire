@@ -1,6 +1,7 @@
 "use strict";
 
 var util = require('util');
+var async = require('async');
 
 var Spitfire = require('../index.js');
 
@@ -21,15 +22,15 @@ exports['node'] = {
     });
 
   },
-  // 'start': function(test) {
-  //   test.expect(1);
-  //   var nodes = Spitfire.create();
-  //   nodes.start();
-  //   nodes.stop(function(){
-  //     test.ok(true,'Should be stopped');
-  //     test.done();
-  //   });
-  // },
+  'start': function(test) {
+    test.expect(1);
+    var nodes = Spitfire.create();
+    nodes.start();
+    nodes.stop(function(){
+      test.ok(true,'Should be stopped');
+      test.done();
+    });
+  },
   'add': function(test) {
     test.expect(1);
     var nodes = Spitfire.create();
@@ -54,6 +55,25 @@ exports['node'] = {
           test.done();
         });
       });
+    });
+  },
+  'set-get-kv': function(test) {
+    test.expect(2);
+    var nodes = Spitfire.create();
+    nodes.add({
+      id: 'test-set',
+      foo: 'bar'
+    }, function(){
+
+      test.equal(nodes.get('test-set', 'foo'), 'bar','Should match');
+      
+      nodes.set('test-set','foo','baz');
+      test.equal(nodes.get('test-set','foo'), 'baz','Should match');
+
+      nodes.stop(function(){
+        test.done();
+      });
+
     });
   },
   'process': function(test) {
@@ -85,7 +105,7 @@ exports['node'] = {
     // create a topo with one node. bind to topo, inject message,
     // receive message from event handler
 
-    var limit = 50;
+    var limit = 5;
     var count = 0;
 
     test.expect(limit);
@@ -95,7 +115,7 @@ exports['node'] = {
       id: 'test'
     }, function(){
 
-      var onMessage = function(message){ 
+      var onMessage = function(message){
         test.ok(true,'Got message');
         count --;
         if(count > 0) {
@@ -114,5 +134,161 @@ exports['node'] = {
       nodes.start();
     });
   },
+  'process-bad-id': function(test) {
+    // should get an error in the callback from the bad id we try and
+    // inject
+    
+    test.expect(2);
+
+    var nodes = Spitfire.create();
+    nodes.add({
+      id: 'test'
+    }, function(){
+      test.equal(nodes.keys().length, 1,'Should be 1');
+
+      var onMessage = function(message){ 
+        nodes.stop(function(){
+          test.done();
+        });
+      };
+
+      nodes.on('message', onMessage);
+      nodes.inject('unknown', 'bad', function(err){
+        test.ok(util.isError(err),'Should be Error');
+        nodes.inject('test', 'foo');
+        nodes.start();
+      });
+    });
+  },
+  'process-chain': function(test) {
+    test.expect(1);
+    var nodes = Spitfire.create();
+    var onMessage = function(message){ 
+      if(message.id !== 'output'){
+        return;
+      }
+      test.equal(message.msg, 46,'Should be double');
+      nodes.stop(function(){
+        test.done();
+      });
+    };
+
+    var n = [{
+      opts: {
+        id: 'multiply'
+      },
+      methods: {
+        process: function(msg, done){
+          return done(null, msg * 2);
+        }
+      }
+    }, {
+      opts: {
+        id: 'output'
+      }, 
+      methods: {
+      },
+      sources: ['multiply']
+    }]
+
+    async.each(n, function(x, next){
+      nodes.add(x.opts, x.methods, x.sources, next);
+    }, function(){
+      nodes.on('message', onMessage);
+      nodes.inject('multiply', 23);
+      nodes.start();
+    });
+  },
+  'many-to-one': function(test) {
+    test.expect(1);
+    var nodes = Spitfire.create();
+    var onMessage = function(message){ 
+      if(message.id !== 'output'){
+        return;
+      }
+      if(message.msg !== 2){
+        return;
+      }
+      test.equal(message.msg, 2,'Should be double');
+      nodes.stop(function(){
+        test.done();
+      });
+    };
+
+    var n = [{
+      opts: {id: 'output'},
+      methods: {
+        init: function(done){
+          this.total = 0;
+          done();
+        },
+        process: function(msg, done){
+          this.total += msg;
+          return done(null, this.total);
+        }
+      },
+      sources: ['input-1','input-2']
+    }, {
+      opts: {id: 'input-1'},
+    }, {
+      opts: {id: 'input-2'},
+    }]
+
+    async.each(n, function(x, next){
+      nodes.add(x.opts, x.methods, x.sources, next);
+    }, function(){
+      nodes.on('message', onMessage);
+      nodes.inject('input-1', 1);
+      nodes.inject('input-2', 1);
+      nodes.start();
+    });
+  },
+  'one-to-many': function(test) {
+    test.expect(2);
+    var nodes = Spitfire.create();
+
+    var count = 0;
+
+    var onMessage = function(message){ 
+      if(message.id === 'input'){
+        return;
+      }
+      count ++;
+      test.equal(message.msg, 1,'Should be 1');
+      if(count < 2){
+        return;
+      }
+      nodes.stop(function(){
+        test.done();
+      });
+    };
+
+    var n = [{
+      opts: {id: 'output-1'},
+      sources: ['input']
+    }, {
+      opts: {id: 'output-2'},
+      sources: ['input']
+    }, {
+      opts: {id: 'input'},
+    }]
+
+    async.each(n, function(x, next){
+      nodes.add(x.opts, x.methods, x.sources, next);
+    }, function(){
+      nodes.on('message', onMessage);
+      nodes.inject('input', 1);
+      nodes.start();
+    });
+  },
+  // 'process-with-changing-params': function(test) {
+  //   test.done();
+  // },
+  // 'averaging': function(test) {
+  //   test.done();
+  // },
+  // 'sync': function(test) {
+  //   test.done();
+  // },
 
 };
