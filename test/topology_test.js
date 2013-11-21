@@ -189,7 +189,7 @@ exports['node'] = {
       methods: {
       },
       sources: ['multiply']
-    }]
+    }];
 
     async.each(n, function(x, next){
       nodes.add(x.opts, x.methods, x.sources, next);
@@ -232,7 +232,7 @@ exports['node'] = {
       opts: {id: 'input-1'},
     }, {
       opts: {id: 'input-2'},
-    }]
+    }];
 
     async.each(n, function(x, next){
       nodes.add(x.opts, x.methods, x.sources, next);
@@ -271,7 +271,7 @@ exports['node'] = {
       sources: ['input']
     }, {
       opts: {id: 'input'},
-    }]
+    }];
 
     async.each(n, function(x, next){
       nodes.add(x.opts, x.methods, x.sources, next);
