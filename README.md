@@ -21,6 +21,20 @@ topo.start();
 topo.inject('my-node','foo');
 ```
 
+## Benchmarks
+
+i5 Thinkpad x220
+
+```bash
+~/spitfire/benchmark$ node thru
+Running 100000 messages...
+done in 7.927s = 12615 messages/second
+
+~/spitfire/benchmark$ node chain
+Running 100000 messages...
+done in 15.725s = 6359 messages/second
+```
+
 ## Release History
 
 * 10/11/2013 0.0.1 Initial release
