@@ -413,11 +413,11 @@ them via the queue</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.stop = <span class="function"><span class="keyword">function</span><span class="params">(cb)</span>{</span>
-    <span class="keyword">this</span>.onShutdown = cb;
-    <span class="keyword">if</span>(!<span class="keyword">this</span>.running){
-      <span class="keyword">this</span>.shutdown();
+    self.onShutdown = cb;
+    <span class="keyword">if</span>(!self.running){
+      self.shutdown();
     }
-    <span class="keyword">this</span>.running = <span class="literal">false</span>;
+    self.running = <span class="literal">false</span>;
   };</pre></div></div>
             
         </li>
@@ -433,7 +433,12 @@ them via the queue</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.shutdown = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.shutdown = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    redis.quit();
+    <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span>.onShutdown === <span class="string">'function'</span>){
+      <span class="keyword">return</span> <span class="keyword">this</span>.onShutdown();
+    }
+  };</pre></div></div>
             
         </li>
         
@@ -443,25 +448,6 @@ them via the queue</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>console.log(‘shutting down’);</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    redis.quit();
-    <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span>.onShutdown === <span class="string">'function'</span>){
-      <span class="keyword">return</span> <span class="keyword">this</span>.onShutdown();
-    }
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>start accepting (polling for) messages</p>
 
@@ -477,11 +463,11 @@ them via the queue</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>run one tick of the topology. Pull a message off the queue and
 have it processed by it’s target node.</p>
@@ -505,11 +491,11 @@ have it processed by it’s target node.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>brpop timed out</p>
 
@@ -526,11 +512,11 @@ have it processed by it’s target node.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>bad json</p>
 
@@ -576,11 +562,11 @@ Topology.prototype.off = <span class="function"><span class="keyword">function</
         </li>
         
         
-        <li id="section-23">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>No events, or removing <em>all</em> events.</p>
 
@@ -600,11 +586,11 @@ Topology.prototype.off = <span class="function"><span class="keyword">function</
         </li>
         
         
-        <li id="section-24">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Loop through the callback list, splicing where appropriate.</p>
 
@@ -638,11 +624,11 @@ Topology.prototype.emit = <span class="function"><span class="keyword">function<
         </li>
         
         
-        <li id="section-25">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Fill up <code>rest</code> with the callback arguments.  Since we’re only copying
 the tail of <code>arguments</code>, a loop is much faster than Array#slice.</p>
@@ -656,11 +642,11 @@ the tail of <code>arguments</code>, a loop is much faster than Array#slice.</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>For each event, walk through the list of callbacks twice, first to
 trigger the event, then to trigger any <code>&quot;all&quot;</code> callbacks.</p>
@@ -672,11 +658,11 @@ trigger the event, then to trigger any <code>&quot;all&quot;</code> callbacks.</
         </li>
         
         
-        <li id="section-27">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Copy callback lists to prevent modification.</p>
 
@@ -693,11 +679,11 @@ trigger the event, then to trigger any <code>&quot;all&quot;</code> callbacks.</
         </li>
         
         
-        <li id="section-28">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Execute event callbacks.</p>
 
@@ -712,11 +698,11 @@ trigger the event, then to trigger any <code>&quot;all&quot;</code> callbacks.</
         </li>
         
         
-        <li id="section-29">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Execute “all” callbacks.</p>
 
