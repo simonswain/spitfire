@@ -66,7 +66,7 @@ exports['node'] = {
     }, function(){
 
       test.equal(nodes.get('test-set', 'foo'), 'bar','Should match');
-      
+
       nodes.set('test-set','foo','baz');
       test.equal(nodes.get('test-set','foo'), 'baz','Should match');
 
@@ -79,7 +79,7 @@ exports['node'] = {
   'process': function(test) {
     // create a topo with one node. bind to topo, inject message,
     // receive message from event handler
-    
+
     test.expect(3);
 
     var nodes = Spitfire.create();
@@ -88,7 +88,7 @@ exports['node'] = {
     }, function(){
       test.equal(nodes.keys().length, 1,'Should be 1');
 
-      var onMessage = function(message){ 
+      var onMessage = function(message){
         test.equal(message.id, 'test','Should be id');
         test.equal(message.msg, 'foo','Should be message');
         nodes.stop(function(){
@@ -96,6 +96,23 @@ exports['node'] = {
         });
       };
 
+      nodes.on('message', onMessage);
+      nodes.inject('test', 'foo');
+      nodes.start();
+    });
+  },
+  'get-latched-val': function(test) {
+    test.expect(1);
+    var nodes = Spitfire.create();
+    nodes.add({
+      id: 'test'
+    }, function(){
+      var onMessage = function(message){
+        test.equal(nodes.val('test'), 'foo','Should be message');
+        nodes.stop(function(){
+          test.done();
+        });
+      };
       nodes.on('message', onMessage);
       nodes.inject('test', 'foo');
       nodes.start();
@@ -137,7 +154,7 @@ exports['node'] = {
   'process-bad-id': function(test) {
     // should get an error in the callback from the bad id we try and
     // inject
-    
+
     test.expect(2);
 
     var nodes = Spitfire.create();
@@ -146,7 +163,7 @@ exports['node'] = {
     }, function(){
       test.equal(nodes.keys().length, 1,'Should be 1');
 
-      var onMessage = function(message){ 
+      var onMessage = function(message){
         nodes.stop(function(){
           test.done();
         });
@@ -163,7 +180,7 @@ exports['node'] = {
   'process-chain': function(test) {
     test.expect(1);
     var nodes = Spitfire.create();
-    var onMessage = function(message){ 
+    var onMessage = function(message){
       if(message.id !== 'output'){
         return;
       }
@@ -185,7 +202,7 @@ exports['node'] = {
     }, {
       opts: {
         id: 'output'
-      }, 
+      },
       methods: {
       },
       sources: ['multiply']
@@ -202,7 +219,7 @@ exports['node'] = {
   'many-to-one': function(test) {
     test.expect(1);
     var nodes = Spitfire.create();
-    var onMessage = function(message){ 
+    var onMessage = function(message){
       if(message.id !== 'output'){
         return;
       }
@@ -249,7 +266,7 @@ exports['node'] = {
 
     var count = 0;
 
-    var onMessage = function(message){ 
+    var onMessage = function(message){
       if(message.id === 'input'){
         return;
       }

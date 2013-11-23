@@ -81,6 +81,24 @@ exports['node'] = {
         });
       });
   },
+  'val': function(test) {
+    test.expect(2);
+    var localValue = 23;
+    var node = new Node({
+      id: 'test',
+      myValue: localValue
+    }, {
+      process: function(msg, done){
+        return done(null, this.get('myValue'));
+      }}, function(err){
+
+        node.process({}, function(err, msg){
+          test.ok(!util.isError(err), 'should be no error'); 
+          test.equal(msg, localValue); 
+          test.done();
+        });
+      });
+  },
   'stop': function(test) {
     test.expect(2);
     var node = new Node({
