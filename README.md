@@ -26,13 +26,25 @@ topo.inject('my-node','foo');
 i5 Thinkpad x220
 
 ```bash
-~/spitfire/benchmark$ node thru
+x220:~/spitfire/benchmark$ node thru
 Running 100000 messages...
 done in 7.927s = 12615 messages/second
 
-~/spitfire/benchmark$ node chain
+x220:~/spitfire/benchmark$ node chain
 Running 100000 messages...
 done in 15.725s = 6359 messages/second
+```
+
+i7 Thinkpad x230
+
+```bash
+x230:~/spitfire/benchmark$ node thru
+Running 100000 messages...
+done in 6.331s = 15795 messages/second
+
+x230:~/spitfire/benchmark$ node chain
+Running 100000 messages...
+done in 11.910s = 8396 messages/second
 ```
 
 ## Release History
