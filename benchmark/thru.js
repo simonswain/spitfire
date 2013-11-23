@@ -21,7 +21,7 @@ var run = module.exports = function(limit, done){
       nodes.stop(function(){
         done();
       });
-    }
+    };
 
     nodes.on('message', onMessage);
     nodes.start();
@@ -32,9 +32,10 @@ var run = module.exports = function(limit, done){
   });
 };
 
-var limit = 500000;
+var limit = 100000;
 console.log('Running ' + limit + ' messages...');
 var t = new Date().getTime(0);
 run(limit, function(){
-  console.log('done in ' + ((new Date().getTime() - t)/1000).toFixed(3) + 's');
+  var elapsed = (new Date().getTime() - t)/1000;
+  console.log('done in ' + elapsed.toFixed(3) + 's = ' + (limit / elapsed).toFixed(0) + ' messages/second');
 });
