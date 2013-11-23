@@ -1,7 +1,7 @@
 {
   "name": "spitfire",
-  "description": "Reactive programming system",
-  "version": "0.0.1",
+  "description": "Dynamic reactive programming system",
+  "version": "0.0.2",
   "homepage": "https://github.com/simonswain/spitfire",
   "author": {
     "name": "Simon Swain",
@@ -37,7 +37,6 @@
     "grunt-contrib-jshint": "~0.7.1",
     "grunt": "~0.4.1",
     "grunt-contrib-nodeunit": "~0.2.2",
-    "grunt-docco": "~0.3.0",
     "grunt-docco2": "~0.1.5"
   },
   "keywords": [
