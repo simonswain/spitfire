@@ -291,4 +291,6 @@ exports['node'] = {
   //   test.done();
   // },
 
+  // ensure source target is removed when node removed
+
 };
