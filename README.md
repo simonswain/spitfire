@@ -2,7 +2,7 @@
 
 Reactive Programming framework for Node.js
 
-Version 0.0.2
+Version 0.0.3
 
 [![Build Status](https://travis-ci.org/simonswain/spitfire.png)](https://travis-ci.org/simonswain/spitfire)
 
