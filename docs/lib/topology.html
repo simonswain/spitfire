@@ -193,14 +193,12 @@
     }
 
     <span class="keyword">this</span>.nodes[id].stop(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-
       _.each(self.sources[id], <span class="function"><span class="keyword">function</span><span class="params">(source_id)</span>{</span>
         self.targets[source_id] = _.without(self.targets[source_id], id);
       });
       <span class="keyword">delete</span> self.sources[id];
       self.ids = _.without(self.ids, id);
       <span class="keyword">delete</span> self.nodes[id];
-
       <span class="keyword">return</span> done();
     });
   };
@@ -226,7 +224,7 @@
     }
 
     <span class="keyword">if</span>(!key){
-      <span class="keyword">return</span>;
+      <span class="keyword">return</span> <span class="keyword">this</span>.nodes[id];
     }
 
     <span class="keyword">return</span> <span class="keyword">this</span>.nodes[id].get(key);
