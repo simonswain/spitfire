@@ -30,14 +30,23 @@ module.exports = function(grunt) {
         eqnull: true,
         node: true
       }
+    },
+    docco: {
+      debug: {
+        src: ['lib/**/*.js'],
+        options: {
+          output: 'docs/'
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-docco2');
 
   grunt.registerTask('test', ['jshint', 'nodeunit:files']);
 
-  grunt.registerTask('default', ['test']);
+  grunt.registerTask('default', ['test', 'docco']);
 
 };
