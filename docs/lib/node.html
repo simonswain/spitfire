@@ -142,6 +142,14 @@ Node.prototype.process = <span class="function"><span class="keyword">function</
   });
 };
 
+Node.prototype.inspect = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+  <span class="keyword">return</span> {
+    id: <span class="keyword">this</span>.id,
+    val: <span class="keyword">this</span>.value,
+    attributes: <span class="keyword">this</span>.attributes
+  };
+};
+
 Node.prototype.val = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
   <span class="keyword">return</span> <span class="keyword">this</span>.value;
 };

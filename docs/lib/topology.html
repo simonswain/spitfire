@@ -46,27 +46,31 @@
   }
 
   <span class="keyword">if</span>(!opts.hasOwnProperty(<span class="string">'redis'</span>)){
-    opts.redis = {
-      host: <span class="string">'127.0.0.1'</span>,
-      port: <span class="number">6379</span>
-    };
+    opts.redis = {};
   }
 
-  <span class="keyword">if</span>(!opts.redis.hasOwnProperty(<span class="string">'prefix'</span>)){
-    opts.redis.prefix = <span class="string">''</span>;
+  <span class="keyword">if</span>(!opts.redis.hasOwnProperty(<span class="string">'host'</span>)){
+    opts.redis.host = <span class="string">'127.0.0.1'</span>;
+  }
+
+  <span class="keyword">if</span>(!opts.redis.hasOwnProperty(<span class="string">'port'</span>)){
+    opts.redis.port = <span class="number">6379</span>;
+  }
+
+  <span class="keyword">var</span> keys = {};
+  
+
+  <span class="keyword">if</span>(!opts.redis.hasOwnProperty(<span class="string">'prefix'</span>) || opts.redis.prefix === <span class="string">''</span>){
+    keys.queue = <span class="string">'queue'</span>;
   } <span class="keyword">else</span> {
-    opts.redis.prefix = <span class="string">':'</span> + opts.redis.prefix;
+    keys.queue = opts.redis.prefix + <span class="string">':queue'</span>;
   }
-
-  <span class="keyword">var</span> keys = {
-    queue: opts.redis.prefix + <span class="string">'queue'</span>
-  };
 
   <span class="keyword">var</span> redis = Redis.createClient({
-    host: opts.redis.host, 
+    host: opts.redis.host,
     port: opts.redis.port
   });
-  console.log(opts);
+
   <span class="keyword">this</span>.running = <span class="literal">false</span>;</pre></div></div>
             
         </li>

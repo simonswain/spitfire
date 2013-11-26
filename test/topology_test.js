@@ -5,11 +5,13 @@ var async = require('async');
 
 var Spitfire = require('../index.js');
 
+var opts = {redis:{prefix:'test'}};
+
 exports['node'] = {
   'new': function(test) {
     test.expect(6);
 
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     test.equal(typeof nodes, 'object', 'should be object');
     test.equal(typeof nodes.add, 'function', 'should be function');
     test.equal(typeof nodes.remove, 'function', 'should be function');
@@ -24,7 +26,7 @@ exports['node'] = {
   },
   'start': function(test) {
     test.expect(1);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.start();
     nodes.stop(function(){
       test.ok(true,'Should be stopped');
@@ -33,7 +35,7 @@ exports['node'] = {
   },
   'add': function(test) {
     test.expect(1);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test'
     }, function(){
@@ -45,7 +47,7 @@ exports['node'] = {
   },
   'remove': function(test) {
     test.expect(1);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test'
     }, function(){
@@ -59,7 +61,7 @@ exports['node'] = {
   },
   'set-get-kv': function(test) {
     test.expect(2);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test-set',
       foo: 'bar'
@@ -82,7 +84,7 @@ exports['node'] = {
 
     test.expect(3);
 
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test'
     }, function(){
@@ -103,7 +105,7 @@ exports['node'] = {
   },
   'get-latched-val': function(test) {
     test.expect(1);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test'
     }, function(){
@@ -127,7 +129,7 @@ exports['node'] = {
 
     test.expect(limit);
 
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test'
     }, function(){
@@ -157,7 +159,7 @@ exports['node'] = {
 
     test.expect(2);
 
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test'
     }, function(){
@@ -179,7 +181,7 @@ exports['node'] = {
   },
   'process-chain': function(test) {
     test.expect(1);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     var onMessage = function(message){
       if(message.id !== 'output'){
         return;
@@ -218,7 +220,7 @@ exports['node'] = {
   },
   'many-to-one': function(test) {
     test.expect(1);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
     var onMessage = function(message){
       if(message.id !== 'output'){
         return;
@@ -262,7 +264,7 @@ exports['node'] = {
   },
   'one-to-many': function(test) {
     test.expect(2);
-    var nodes = Spitfire.create();
+    var nodes = Spitfire.create(opts);
 
     var count = 0;
 
