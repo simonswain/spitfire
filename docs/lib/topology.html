@@ -62,8 +62,11 @@
     queue: opts.redis.prefix + <span class="string">'queue'</span>
   };
 
-  <span class="keyword">var</span> redis = Redis.createClient();
-
+  <span class="keyword">var</span> redis = Redis.createClient({
+    host: opts.redis.host, 
+    port: opts.redis.port
+  });
+  console.log(opts);
   <span class="keyword">this</span>.running = <span class="literal">false</span>;</pre></div></div>
             
         </li>
@@ -224,9 +227,11 @@
     <span class="keyword">if</span>(!<span class="keyword">this</span>.nodes.hasOwnProperty(id)){
       <span class="keyword">return</span>;
     }
-
+    
     <span class="keyword">if</span>(!key){
-      <span class="keyword">return</span> <span class="keyword">this</span>.nodes[id];
+      <span class="keyword">var</span> node = <span class="keyword">this</span>.nodes[id].inspect();
+      node.sources = <span class="keyword">this</span>.sources[id];
+      <span class="keyword">return</span> node;
     }
 
     <span class="keyword">return</span> <span class="keyword">this</span>.nodes[id].get(key);
