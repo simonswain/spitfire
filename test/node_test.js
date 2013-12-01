@@ -65,7 +65,7 @@ exports['node'] = {
   },
   'process': function(test) {
     test.expect(2);
-    var localValue = 23;
+    var localValue = {value: 23};
     var node = new Node({
       id: 'test',
       myValue: localValue
@@ -83,7 +83,7 @@ exports['node'] = {
   },
   'val': function(test) {
     test.expect(2);
-    var localValue = 23;
+    var localValue = {value: 23};
     var node = new Node({
       id: 'test',
       myValue: localValue
