@@ -83,23 +83,23 @@ exports['node'] = {
     // receive message from event handler
 
     test.expect(3);
-
+    var testmsg = {value: 100};
     var nodes = Spitfire.create(opts);
     nodes.add({
       id: 'test'
     }, function(){
       test.equal(nodes.keys().length, 1,'Should be 1');
-
+      
       var onMessage = function(message){
         test.equal(message.id, 'test','Should be id');
-        test.equal(message.msg, 'foo','Should be message');
+        test.deepEqual(message.msg, testmsg, 'Should be message');
         nodes.stop(function(){
           test.done();
         });
       };
 
       nodes.on('message', onMessage);
-      nodes.inject('test', 'foo');
+      nodes.inject('test', testmsg);
       nodes.start();
     });
   },
