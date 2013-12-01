@@ -57,7 +57,7 @@
   <span class="keyword">this</span>.attributes = {};
   <span class="keyword">this</span>.value = <span class="literal">undefined</span>;
 
-  [<span class="string">'init'</span>,<span class="string">'stop'</span>,<span class="string">'process'</span>].forEach(<span class="function"><span class="keyword">function</span><span class="params">(method)</span>{</span>
+  [<span class="string">'init'</span>,<span class="string">'stop'</span>].forEach(<span class="function"><span class="keyword">function</span><span class="params">(method)</span>{</span>
     <span class="keyword">if</span>(methods.hasOwnProperty(method)){
       self[method] = methods[method];
     }
