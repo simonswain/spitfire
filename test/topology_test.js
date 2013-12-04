@@ -59,6 +59,27 @@ exports['node'] = {
       });
     });
   },
+
+  'remove-source-target': function(test) {
+    test.expect(2);
+    var nodes = Spitfire.create(opts);
+    nodes.add({
+      id: 'test'
+    }, function(){
+      nodes.add({id: 'other'}, false, ['test'], function(){
+        nodes.remove('test', function(){
+          test.equal(nodes.keys().length, 1,'Should be 1');
+          var ins = nodes.inspect();
+          test.equal(ins.other.sources.length, 0, 'Should be 0');
+          nodes.stop(function(){
+            test.done();
+          });
+        });
+      });
+    });
+  },
+
+
   'set-get-kv': function(test) {
     test.expect(2);
     var nodes = Spitfire.create(opts);
