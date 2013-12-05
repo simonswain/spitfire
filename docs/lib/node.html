@@ -55,7 +55,7 @@
 
   <span class="keyword">this</span>.id = opts.id;
   <span class="keyword">this</span>.attrs = {};
-  <span class="keyword">this</span>.value = <span class="literal">undefined</span>;
+  <span class="keyword">this</span>.latchedMessage = <span class="literal">undefined</span>;
 
   [<span class="string">'init'</span>,<span class="string">'stop'</span>].forEach(<span class="function"><span class="keyword">function</span><span class="params">(method)</span>{</span>
     <span class="keyword">if</span>(methods.hasOwnProperty(method)){
@@ -72,7 +72,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>This will be wrapped so we can capture the output value</p>
+              <p>This will be wrapped so we can capture the output message</p>
 
             </div>
             
@@ -100,9 +100,7 @@ Node.prototype.init = <span class="function"><span class="keyword">function</spa
 
 Node.prototype.stop = <span class="function"><span class="keyword">function</span><span class="params">(done)</span>{</span>
   <span class="keyword">return</span> done();
-};
-
-Node.prototype.processHandler = <span class="function"><span class="keyword">function</span><span class="params">(msg, done)</span>{</span></pre></div></div>
+};</pre></div></div>
             
         </li>
         
@@ -112,6 +110,21 @@ Node.prototype.processHandler = <span class="function"><span class="keyword">fun
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>this will most likely be overridden whern creating the node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.prototype.processHandler = <span class="function"><span class="keyword">function</span><span class="params">(msg, done)</span>{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>default is to just pass thru;</p>
 
@@ -127,17 +140,17 @@ Node.prototype.process = <span class="function"><span class="keyword">function</
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>latch most recent value</p>
+              <p>latch most recent message</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    self.value = msg;
+            <div class="content"><div class='highlight'><pre>    self.latchedMessage = msg;
     done(<span class="literal">null</span>, msg);
   });
 };
@@ -145,13 +158,13 @@ Node.prototype.process = <span class="function"><span class="keyword">function</
 Node.prototype.inspect = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
   <span class="keyword">return</span> {
     id: <span class="keyword">this</span>.id,
-    val: <span class="keyword">this</span>.value,
+    message: <span class="keyword">this</span>.message,
     attrs: <span class="keyword">this</span>.attrs
   };
 };
 
-Node.prototype.val = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-  <span class="keyword">return</span> <span class="keyword">this</span>.value;
+Node.prototype.message = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+  <span class="keyword">return</span> <span class="keyword">this</span>.latchedMessage;
 };
 
 Node.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">(key)</span>{</span>

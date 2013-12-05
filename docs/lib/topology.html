@@ -338,18 +338,17 @@ queue</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>Get value of a node (result of last message output)</p>
+              <p>Get last message the node output</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-  <span class="keyword">this</span>.val = <span class="function"><span class="keyword">function</span><span class="params">(id)</span>{</span>
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.message = <span class="function"><span class="keyword">function</span><span class="params">(id)</span>{</span>
 
     <span class="keyword">if</span>(!<span class="keyword">this</span>.nodes.hasOwnProperty(id)){
       <span class="keyword">return</span>;
     }
 
-    <span class="keyword">return</span> <span class="keyword">this</span>.nodes[id].val();
+    <span class="keyword">return</span> <span class="keyword">this</span>.nodes[id].message();
 
   };</pre></div></div>
             

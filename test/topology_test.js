@@ -124,20 +124,21 @@ exports['node'] = {
       nodes.start();
     });
   },
-  'get-latched-val': function(test) {
+  'get-latched-message': function(test) {
     test.expect(1);
     var nodes = Spitfire.create(opts);
+    var myMessage = {'text':'foo'};
     nodes.add({
       id: 'test'
     }, function(){
       var onMessage = function(message){
-        test.equal(nodes.val('test'), 'foo','Should be message');
+        test.deepEqual(nodes.message('test'), myMessage,'Should be message');
         nodes.stop(function(){
           test.done();
         });
       };
       nodes.on('message', onMessage);
-      nodes.inject('test', 'foo');
+      nodes.inject('test', myMessage);
       nodes.start();
     });
   },
