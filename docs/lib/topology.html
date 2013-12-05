@@ -390,6 +390,7 @@ method to get data in to the topology</p>
             
             <div class="content"><div class='highlight'><pre>
   <span class="keyword">this</span>.inject = <span class="function"><span class="keyword">function</span><span class="params">(id, msg, done)</span>{</span>
+
     <span class="keyword">if</span>(!<span class="keyword">this</span>.nodes.hasOwnProperty(id)){
       <span class="keyword">return</span> done &amp;&amp; done(<span class="keyword">new</span> Error(<span class="string">'unknown node'</span>));
     }
