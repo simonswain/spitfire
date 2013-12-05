@@ -58,7 +58,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  
+            <div class="content"><div class='highlight'><pre>
   <span class="keyword">if</span>(!opts.hasOwnProperty(<span class="string">'redis'</span>)){
     opts.redis = {};
   }
@@ -259,7 +259,7 @@ queue</p>
         self.targets[id].push(opts.id);
         self.sources[opts.id].push(id);
       });
-      <span class="keyword">return</span> done();
+      done();
     });
   };</pre></div></div>
             
@@ -283,17 +283,20 @@ queue</p>
       <span class="keyword">return</span> done();
     }
 
-    <span class="keyword">this</span>.nodes[id].stop(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-      _.each(self.sources[id], <span class="function"><span class="keyword">function</span><span class="params">(source_id)</span>{</span>
-        self.targets[source_id] = _.without(self.targets[source_id], id);
+    <span class="keyword">this</span>.nodes[id].stop(
+      <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+        _.each(
+          self.targets[id], 
+          <span class="function"><span class="keyword">function</span><span class="params">(source_id)</span>{</span>
+            self.sources[source_id] = _.without(self.sources[source_id], id);
+          });
+        <span class="keyword">delete</span> self.targets[id];
+        self.ids = _.without(self.ids, id);
+        <span class="keyword">delete</span> self.nodes[id];
+        <span class="keyword">return</span> done();
       });
-      <span class="keyword">delete</span> self.sources[id];
-      self.ids = _.without(self.ids, id);
-      <span class="keyword">delete</span> self.nodes[id];
-      <span class="keyword">return</span> done();
-    });
   };
-
+  
 
   <span class="keyword">this</span>.set = <span class="function"><span class="keyword">function</span><span class="params">(id, key, value)</span>{</span>
 
@@ -315,7 +318,7 @@ queue</p>
     <span class="keyword">if</span>(!<span class="keyword">this</span>.nodes.hasOwnProperty(id)){
       <span class="keyword">return</span>;
     }
-    
+
     <span class="keyword">if</span>(!key){
       <span class="keyword">var</span> node = <span class="keyword">this</span>.nodes[id].inspect();
       node.sources = <span class="keyword">this</span>.sources[id];
@@ -396,7 +399,7 @@ method to get data in to the topology</p>
       id: id,
       msg: msg
     };
-    
+
     redis.lpush(
       keys.queue,
       JSON.stringify(message),
@@ -599,10 +602,10 @@ have it processed by it’s target node.</p>
 
     redis.rpop(
       [keys.queue],
-      <span class="function"><span class="keyword">function</span><span class="params">(err, reply)</span>{</span>        
+      <span class="function"><span class="keyword">function</span><span class="params">(err, reply)</span>{</span>
         <span class="keyword">if</span>(err){
           console.log(<span class="string">'#run error'</span>, err);
-          setTimeout(self.run, <span class="number">1000</span>);
+          self.run();
           <span class="keyword">return</span>;
         }
         <span class="keyword">if</span> (!reply){</pre></div></div>
@@ -616,12 +619,11 @@ have it processed by it’s target node.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>no message timed out</p>
+              <p>timed out, no message</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          console.log(<span class="string">'no message'</span>);
-          setTimeout(self.run, <span class="number">1000</span>);
+            <div class="content"><div class='highlight'><pre>          self.run();
           <span class="keyword">return</span>;
         }
         <span class="keyword">var</span> id, msg, input;
@@ -643,10 +645,10 @@ have it processed by it’s target node.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>          console.log(<span class="string">'bad json'</span>, e, reply);
-          setTimeout(self.run, <span class="number">1000</span>);
+          self.run();
           <span class="keyword">return</span>;
         }
-        
+
         self.process(
           input.id,
           input.msg,
