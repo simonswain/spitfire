@@ -34,6 +34,7 @@
 
 <span class="keyword">var</span> Redis = require(<span class="string">'redis'</span>);
 <span class="keyword">var</span> _ = require(<span class="string">'underscore'</span>);
+<span class="keyword">var</span> async = require(<span class="string">'async'</span>);
 <span class="keyword">var</span> util = require(<span class="string">'util'</span>);
 <span class="keyword">var</span> Node = require(<span class="string">'./node'</span>);
 
@@ -372,6 +373,18 @@ queue</p>
       nodes[id].sources = <span class="keyword">this</span>.sources[id];
     }
     <span class="keyword">return</span> nodes;
+  };
+
+
+  <span class="keyword">this</span>.reset = <span class="function"><span class="keyword">function</span><span class="params">(done)</span>{</span>
+    <span class="keyword">var</span> self = <span class="keyword">this</span>;
+    async.eachSeries(
+      <span class="keyword">this</span>.ids,
+      <span class="function"><span class="keyword">function</span><span class="params">(id, next)</span>{</span>
+        self.remove(id, next);
+      },
+      done
+    );
   };</pre></div></div>
             
         </li>

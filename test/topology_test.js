@@ -8,6 +8,7 @@ var Spitfire = require('../index.js');
 var opts = {redis:{prefix:'test'}};
 
 exports['node'] = {
+
   'new': function(test) {
     test.expect(6);
 
@@ -24,6 +25,7 @@ exports['node'] = {
     });
 
   },
+
   'start': function(test) {
     test.expect(1);
     var nodes = Spitfire.create(opts);
@@ -33,6 +35,7 @@ exports['node'] = {
       test.done();
     });
   },
+
   'add': function(test) {
     test.expect(1);
     var nodes = Spitfire.create(opts);
@@ -45,6 +48,7 @@ exports['node'] = {
       });
     });
   },
+
   'remove': function(test) {
     test.expect(1);
     var nodes = Spitfire.create(opts);
@@ -52,6 +56,21 @@ exports['node'] = {
       id: 'test'
     }, function(){
       nodes.remove('test', function(){
+        test.equal(nodes.keys().length, 0,'Should be 0');
+        nodes.stop(function(){
+          test.done();
+        });
+      });
+    });
+  },
+
+  'reset': function(test) {
+    test.expect(1);
+    var nodes = Spitfire.create(opts);
+    nodes.add({
+      id: 'test'
+    }, function(){
+      nodes.reset(function(){
         test.equal(nodes.keys().length, 0,'Should be 0');
         nodes.stop(function(){
           test.done();
@@ -99,6 +118,7 @@ exports['node'] = {
 
     });
   },
+
   'process': function(test) {
     // create a topo with one node. bind to topo, inject message,
     // receive message from event handler
@@ -124,6 +144,7 @@ exports['node'] = {
       nodes.start();
     });
   },
+
   'get-latched-message': function(test) {
     test.expect(1);
     var nodes = Spitfire.create(opts);
@@ -142,6 +163,7 @@ exports['node'] = {
       nodes.start();
     });
   },
+
   'process-many': function(test) {
     // create a topo with one node. bind to topo, inject message,
     // receive message from event handler
@@ -175,6 +197,7 @@ exports['node'] = {
       nodes.start();
     });
   },
+
   'process-bad-id': function(test) {
     // should get an error in the callback from the bad id we try and
     // inject
@@ -201,6 +224,7 @@ exports['node'] = {
       });
     });
   },
+
   'process-chain': function(test) {
     test.expect(1);
     var nodes = Spitfire.create(opts);
